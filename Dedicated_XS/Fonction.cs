@@ -7,7 +7,8 @@ namespace Client
 {
     class Fonction
     {
-        
+        public static bool ServerState;
+
         static void Helpmsg()
         {
             Console.WriteLine("Help message list of availiable command:");
@@ -26,20 +27,27 @@ namespace Client
                 case "/quit":
                     Environment.Exit(404);
                     break;
-                case "/StartServer":
+                case "/ServerStart":
                     Console.Write("Ip : ");
                     string ip = Console.ReadLine();
                     Console.Write("Port : ");
                     int port = Convert.ToInt32(Console.ReadLine());
                     new Server(ip,port);
+                    ServerState = true;
                     break;
-                case "/StartServer Auto":
+                case "/ServerStart Auto":
                     ip = "127.0.0.1";
                     port = 47950;
                     new Server(ip, port);
+                    ServerState = true;
                     break;
-                case "/SendCommand":
-                    Server.Commhandle();
+                case "/MsgStart":
+                    if (ServerState)
+                    {
+                        Server.MsgStart();
+                    } else {
+                        Console.WriteLine("Error : Serveur not Started");
+                    }
                     break;
                 case "/FileSend" :
                     string path = Console.ReadLine();

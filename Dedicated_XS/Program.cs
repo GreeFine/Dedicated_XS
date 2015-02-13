@@ -18,6 +18,7 @@ namespace Client
             {
                 Console.Clear();
                 Console.WriteLine("LogedIn ... Wellcom Master");
+                Console.WriteLine("Version 1.2");
                 
             }
             else

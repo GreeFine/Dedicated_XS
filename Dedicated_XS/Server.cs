@@ -32,7 +32,8 @@ namespace Client
                     //blocks until a client has connected to the server
                     client = this.tcpListener.AcceptTcpClient();
                     Console.WriteLine("User connected");
-                    Thread clientReceiver = new Thread(Receiver);                    
+                    Thread clientReceiver = new Thread(Receiver);
+                    clientReceiver.Start();
                 }
             }
 
@@ -63,96 +64,82 @@ namespace Client
 
                 //message has successfully been received
                 string ReceivData = encoder.GetString(_receivdata, 0, bytesRead);
-                Console.WriteLine(ReceivData);       
+                Console.WriteLine("Client : " + ReceivData);       
             }
 
-            public static void Commhandle()
+            public static void MsgStart()
             {
-                NetworkStream clientStream = client.GetStream(); 
-                ASCIIEncoding encoder = new ASCIIEncoding(); 
-                bool x = true;
-                string C;
-                while (x)
+                try
                 {
-                    C = Console.ReadLine();
-                    if (C == "ConnectionClose" || C == "ConnectionRetry")
+                    NetworkStream clientStream = client.GetStream();
+                    ASCIIEncoding encoder = new ASCIIEncoding();
+                    bool x = true;
+                    string C;
+                    while (x)
                     {
-                        byte[] buffer = encoder.GetBytes(C);
-                        clientStream.Write(buffer, 0, buffer.Length);
-                        clientStream.Flush();
-                        Console.WriteLine("Disconnecting ...");
-                        client.GetStream().Close();
-                        client.Close();
-                        x = false;
-                    }
-                    else
-                    {
-                        if (C == "/Exit") { x = false; }
-                        else {
+                        C = Console.ReadLine();
+                        if (C == "ConnectionClose" || C == "ConnectionRetry")
+                        {
                             byte[] buffer = encoder.GetBytes(C);
                             clientStream.Write(buffer, 0, buffer.Length);
                             clientStream.Flush();
-                        };
-
-                    }
-                }
-            }
-
-            public static void FileSending(string File)
-            {
-                NetworkStream clientStream = client.GetStream();
-                ASCIIEncoding encoder = new ASCIIEncoding();
-                byte[] SendingBuffer = null;
-                byte[] KeysByte;
-                int BufferSize = 1024;
-                //Starting Verification Key
-                string Keys = "/FileSend";
-                KeysByte = encoder.GetBytes(Keys);
-                clientStream.Write(KeysByte, 0, KeysByte.Length);
-                Thread.Sleep(250);
-                Console.ReadKey();
-
-                Keys = "00101";
-                KeysByte = encoder.GetBytes(Keys);
-                clientStream.Write(KeysByte, 0, KeysByte.Length);
-                Thread.Sleep(250);
-                Console.ReadKey();
-                try
-                {
-                    FileStream Fs = new FileStream(File, FileMode.Open, FileAccess.Read);
-                    int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(BufferSize)));
-                    int TotalLength = (int)Fs.Length, CurrentPacketLength, counter = 0;
-                    for (int i = 0; i < NoOfPackets; i++)
-                    {
-                        if (TotalLength > BufferSize)
-                        {
-                            CurrentPacketLength = BufferSize;
-                            TotalLength = TotalLength - CurrentPacketLength;
+                            Console.WriteLine("Disconnecting ...");
+                            client.GetStream().Close();
+                            client.Close();
+                            x = false;
                         }
                         else
                         {
-                            CurrentPacketLength = TotalLength;
-                            SendingBuffer = new byte[CurrentPacketLength];
-                            Fs.Read(SendingBuffer, 0, CurrentPacketLength);
-                            clientStream.Write(SendingBuffer, 0, (int)SendingBuffer.Length);
+                            if (C == "/Exit") { x = false; }
+                            else
+                            {
+                                byte[] buffer = encoder.GetBytes(C);
+                                clientStream.Write(buffer, 0, buffer.Length);
+                                clientStream.Flush();
+                            };
 
-                            Console.WriteLine("Sent " + Fs.Length.ToString() + "bytes to the server");
-                            Fs.Close();
                         }
-
-
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Error : Msg Crash");
                 }
-                Thread.Sleep(250);
-                Keys = "10100";
-                KeysByte = encoder.GetBytes(Keys);
-                clientStream.Write(KeysByte, 0, KeysByte.Length);
-                clientStream.Flush();
+
             }
+
+            public static void FileSending(string file_path)
+            {
+                NetworkStream clientStream = client.GetStream(); 
+                  try
+                    {
+                         /* File reading operation. */
+                        byte[] fileNameByte = Encoding.ASCII.GetBytes(file_path);
+                         Console.WriteLine("Buffering ...");
+                         byte[] fileData = File.ReadAllBytes(file_path); 
+                         /* Read & store file byte data in byte array. */
+                         byte[] clientData = new byte[4 + fileNameByte.Length + fileData.Length];
+                         /* clientData will store complete bytes which will store file name length, file name & file data. */
+                         byte[] fileNameLen = BitConverter.GetBytes(fileNameByte.Length);
+                         /* File name length’s binary data. */
+                         fileNameLen.CopyTo(clientData, 0);
+                         fileNameByte.CopyTo(clientData, 4);
+                         fileData.CopyTo(clientData, 4 + fileNameByte.Length);
+                         /* copy these bytes to a variable with format line [file name length] [file name] [ file content] */
+
+                         /* Trying to connection with server. */
+                         Console.WriteLine("File sending...");
+                         clientStream.Write(clientData, 0, clientData.Length);
+                         clientStream.Flush();
+                         /* Data send complete now close socket. */
+                         Console.WriteLine("File transferred.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("SomeThing Went Wrong");
+                    } 
+            }
+            
 
 
     }
