@@ -1,0 +1,6 @@
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_X\Dedicated_X\obj\Debug\Dedicated_X.csprojResolveAssemblyReference.cache
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_X\Dedicated_X\bin\Debug\Dedicated_X(Serveur.Receiver).exe.config
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_X\Dedicated_X\bin\Debug\Dedicated_X(Serveur.Receiver).exe
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_X\Dedicated_X\bin\Debug\Dedicated_X(Serveur.Receiver).pdb
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_X\Dedicated_X\obj\Debug\Dedicated_X(Serveur.Receiver).exe
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_X\Dedicated_X\obj\Debug\Dedicated_X(Serveur.Receiver).pdb

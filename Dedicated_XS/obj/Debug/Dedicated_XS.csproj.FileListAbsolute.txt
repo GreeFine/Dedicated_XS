@@ -1,0 +1,12 @@
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\bin\Debug\Dedicated_X(Serveur.Receiver).exe.config
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\bin\Debug\Dedicated_X(Serveur.Receiver).exe
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\bin\Debug\Dedicated_X(Serveur.Receiver).pdb
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\obj\Debug\Dedicated_XS.csprojResolveAssemblyReference.cache
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\obj\Debug\Dedicated_X(Serveur.Receiver).exe
+C:\Users\GreeFine\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\obj\Debug\Dedicated_X(Serveur.Receiver).pdb
+C:\Users\Flo\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\bin\Debug\Dedicated_X(Serveur.Receiver).exe.config
+C:\Users\Flo\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\obj\Debug\Dedicated_X(Serveur.Receiver).exe
+C:\Users\Flo\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\obj\Debug\Dedicated_X(Serveur.Receiver).pdb
+C:\Users\Flo\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\bin\Debug\Dedicated_X(Serveur.Receiver).exe
+C:\Users\Flo\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\bin\Debug\Dedicated_X(Serveur.Receiver).pdb
+C:\Users\Flo\Documents\Visual Studio 2013\Projects\Dedicated_XS\Dedicated_XS\obj\Debug\Dedicated_XS.csprojResolveAssemblyReference.cache
