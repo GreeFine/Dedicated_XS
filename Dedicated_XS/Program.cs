@@ -17,8 +17,8 @@ namespace Client
             if (PassWord == "Darkness") 
             {
                 Console.Clear();
-                Console.WriteLine("LogedIn ... Wellcom Master");
-                Console.WriteLine("Version 1.2");
+                Console.WriteLine("LogedIn ... Welcome");
+                Console.WriteLine("Version 1.4");
                 
             }
             else

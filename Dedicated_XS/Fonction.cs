@@ -50,8 +50,14 @@ namespace Client
                     }
                     break;
                 case "/FileSend" :
-                    string path = Console.ReadLine();
-                    Server.FileSending(path);
+                    if (ServerState)
+                    {
+                        Console.Write("Path : ");
+                        string path = Console.ReadLine();
+                        Server.FileSending(path);
+                    } else {
+                        Console.WriteLine("Error : Serveur not Started");
+                    }
                     break;
                 case "/clear":
                     Console.Clear();
