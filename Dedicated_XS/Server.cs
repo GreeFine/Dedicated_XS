@@ -123,32 +123,31 @@ namespace Client
                 Thread.Sleep(250);
                 try
                     {
+
                         /* File reading operation. */
                         Console.WriteLine("Buffering ...");
                         /* Read & store file byte data in byte array. */
-                        byte[] fileData = File.ReadAllBytes(file_path);
-
-                        //Send Size of the file                      
-                        byte[] buffer = encoder.GetBytes(Convert.ToString(fileData.Length));
-                        clientStream.Write(buffer, 0, buffer.Length);
-                        clientStream.Flush();
-                        //Waiting for validation
-                        int bytesRead = 0;
-                        byte[] _receivdata = new byte[4096];
-                        bytesRead = clientStream.Read(_receivdata, 0, 4096);
-                        string ReceivData = encoder.GetString(_receivdata, 0, bytesRead);
-                        if (ReceivData == "10101")
-                        {
-                            //Sending
-                            Console.Write(" File sending ...");
-                            clientStream.Write(fileData, 0, fileData.Length);
-                            clientStream.Flush();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Eror : Wrog Validation");
-                        }
+                        int BufferSize = 4096;
+                        byte[] SendingBuffer = null;
+                        FileStream Fs = new FileStream(file_path, FileMode.Open, FileAccess.Read);
+                        int TotalLength = (int)Fs.Length, CurrentPacketLength;
+                        int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(BufferSize)));
+                        for (int i = 0; i < NoOfPackets; i++)
+                         {
+                             if (TotalLength > BufferSize)
+                             {
+                                 CurrentPacketLength = BufferSize;
+                                 TotalLength = TotalLength - CurrentPacketLength;
+                             }
+                             else
+                                 CurrentPacketLength = TotalLength;
+                                 SendingBuffer = new byte[CurrentPacketLength];
+                                 Fs.Read(SendingBuffer, 0, CurrentPacketLength);
+                                 clientStream.Write(SendingBuffer, 0, (int)SendingBuffer.Length);
+                             }
                 
+                            Console.WriteLine("Sent " + Fs.Length.ToString()+"bytes to the server");
+                             Fs.Close();
                     }
                     catch (Exception ex)
                     {

@@ -18,7 +18,7 @@ namespace Client
             {
                 Console.Clear();
                 Console.WriteLine("LogedIn ... Welcome");
-                Console.WriteLine("Version 1.4");
+                Console.WriteLine("Version 1.5");
                 
             }
             else

@@ -41,6 +41,15 @@ namespace Client
                     new Server(ip, port);
                     ServerState = true;
                     break;
+                case "Auto":
+                    ip = "127.0.0.1";
+                    port = 47950;
+                    new Server(ip, port);
+                    ServerState = true;
+                    Console.Write("Path : ");
+                    string path = Console.ReadLine();
+                    Server.FileSending(path);
+                    break;
                 case "/MsgStart":
                     if (ServerState)
                     {
@@ -53,7 +62,7 @@ namespace Client
                     if (ServerState)
                     {
                         Console.Write("Path : ");
-                        string path = Console.ReadLine();
+                        path = Console.ReadLine();
                         Server.FileSending(path);
                     } else {
                         Console.WriteLine("Error : Serveur not Started");
@@ -79,51 +88,4 @@ namespace Client
 
     }
 }
-        //static void ConnectConfig()
-        //{
-        //    Console.WriteLine("Config of Connection ....");
-        //    Console.WriteLine("Enter ip :");
-        //    string ip = Console.ReadLine();
-        //    Console.WriteLine("Enter port :");
-        //    string port = Console.ReadLine();
-        //    Console.WriteLine("Connecting " + ip + ":" + port);
-
-        //    //Start Connection
-        //    TcpClient client = new TcpClient();
-
-        //    // Connect using a timeout (5 seconds)
-        //    IAsyncResult result = client.BeginConnect(IPAddress.Parse(ip), int.Parse(port), null, null);
-        //    bool success = result.AsyncWaitHandle.WaitOne(5000, true);
-       
-        //    if (!success)
-        //    {
-        //        client.Close();
-        //        Console.WriteLine("Connection time out");
-        //    } else 
-        //    {
-        //        Console.WriteLine("Connected");
-        //        ServerCommand( client);
-        //    }
-        //}
-
-        //static void ConnectAuto()
-        //{
-        //    Console.WriteLine("Auto Connection ....");
-        //    //Start Connection
-        //    TcpClient client = new TcpClient();
-        //    // Connect using a timeout (5 seconds)
-        //    IAsyncResult result = client.BeginConnect(IPAddress.Parse("192.168.0.10"), int.Parse("47950"), null, null);
-        //    bool success = result.AsyncWaitHandle.WaitOne(5000, true);
-        //    if (!success)
-        //    {
-        //        client.Close();
-        //        Console.WriteLine("Connection time out");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Connected");
-        //        ServerCommand(client);
-        //    }
-        //}
-        
 
